@@ -55,22 +55,16 @@ class _MatchPageState extends State<MatchPage> with TickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20,
-            ),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RegisterMatchPage(),
-                  ),
-                );
-              },
-              child: Text('Adicionar Trajeto'),
-            ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RegisterMatchPage(),
+                ),
+              );
+            },
+            child: Text('Adicionar Trajeto'),
           ),
           Center(
             child: Text("Primeiro, adicione um trajeto"),
@@ -80,3 +74,5 @@ class _MatchPageState extends State<MatchPage> with TickerProviderStateMixin {
     );
   }
 }
+
+
