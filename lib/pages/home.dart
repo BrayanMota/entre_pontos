@@ -1,3 +1,5 @@
+import 'package:entre_pontos/custom/custom_drawer.dart';
+import 'package:entre_pontos/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,22 +10,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final AuthService _auth = AuthService();
+  String nome = '';
+  String email = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.initialize();
+    _auth.getUsuarioLogado().then((user) {
+      if (user != null) {
+        setState(() {
+          nome = user.displayName!;
+          email = user.email!;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: CustomDrawer(
+        key: const Key('HomeDrawer'),
+      ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
         centerTitle: true,
         title: Container(
           width: 130,
           height: 130,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
               image: NetworkImage(
@@ -41,25 +58,25 @@ class _HomePageState extends State<HomePage> {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Nome',
-                style: TextStyle(
+                nome,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
               Text(
-                'E-mail',
-                style: TextStyle(
+                email,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               TextButton(
                 onPressed: () {},
-                child: Text('Check-in'),
+                child: const Text('Check-in'),
               ),
-              SizedBox(height: 20),
-              Align(
+              const SizedBox(height: 20),
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Estudante da Instituição',
@@ -69,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'X Conexões',
@@ -79,8 +96,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Divider(),
-              Text(
+              const Divider(),
+              const Text(
                   'Seja livre para colocar as coisas que você gosta. Mostre para os outros seus hobbies e se apresente'),
             ],
           ),

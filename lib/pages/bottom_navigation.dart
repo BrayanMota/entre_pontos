@@ -1,8 +1,7 @@
+import 'package:entre_pontos/apps/match/pages/index.dart';
+import 'package:entre_pontos/apps/connection/list.dart';
+import 'package:entre_pontos/pages/home.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
-import '../apps/auth/match/pages/list.dart';
-import 'settings.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({Key? key}) : super(key: key);
@@ -15,9 +14,9 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   int _selectedIndex = 1;
 
   final _pages = <Widget>[
-    SettingsPage(),
-    HomePage(),
-    MatchPage(),
+    const MatchPage(),
+    const HomePage(),
+    const ConnectionsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -33,8 +32,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Configurações',
+            icon: Icon(Icons.map),
+            label: 'Match',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -42,7 +41,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
-            label: 'Matchs',
+            label: 'Conexões',
           ),
         ],
         currentIndex: 1,

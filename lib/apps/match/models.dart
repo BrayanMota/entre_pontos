@@ -1,17 +1,14 @@
-class MatchModel {
+class RouteModel {
   String id;
-  String data;
+  DateTime data;
   bool recorrente;
   int regiaoPartida;
   String bairroPartida;
   int regiaoDestino;
   String bairroDestino;
   List<int> periodos;
-  String createdBy;
-  String createdAt;
-  String updatedAt;
 
-  MatchModel({
+  RouteModel({
     required this.id,
     required this.data,
     required this.recorrente,
@@ -20,24 +17,31 @@ class MatchModel {
     required this.regiaoDestino,
     required this.bairroDestino,
     required this.periodos,
-    required this.createdBy,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
-  factory MatchModel.fromJson(Map<String, dynamic> json) {
-    return MatchModel(
+  factory RouteModel.fromJson(Map<String, dynamic> json) {
+    return RouteModel(
       id: json['id'],
-      data: json['data'],
+      data: json['data'].toDate(),
       recorrente: json['recorrente'],
       regiaoPartida: json['regiaoPartida'],
       bairroPartida: json['bairroPartida'],
       regiaoDestino: json['regiaoDestino'],
       bairroDestino: json['bairroDestino'],
       periodos: json['periodos'].cast<int>(),
-      createdBy: json['createdBy'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'data': data,
+      'recorrente': recorrente,
+      'regiaoPartida': regiaoPartida,
+      'bairroPartida': bairroPartida,
+      'regiaoDestino': regiaoDestino,
+      'bairroDestino': bairroDestino,
+      'periodos': periodos,
+    };
   }
 }
