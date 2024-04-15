@@ -1,3 +1,4 @@
+import 'package:entre_pontos/apps/match/functions.dart';
 import 'package:entre_pontos/apps/match/models.dart';
 import 'package:entre_pontos/services/route_service.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,12 @@ class ListRoutes extends StatefulWidget {
 
 class _ListRoutesState extends State<ListRoutes> {
   final RouteService _routeService = RouteService();
+
+  @override
+  void initState() async {
+    await _routeService.verifyMatches();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +38,72 @@ class _ListRoutesState extends State<ListRoutes> {
               routes.add(RouteModel.fromJson(item.data()));
             }
 
-            return ListView.builder(
-              itemCount: routes.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(routes[index].bairroPartida),
-                  subtitle: Text(routes[index].bairroDestino),
-                );
-              },
+            return Container(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 10, horizontal: 20), // Cards
+              child: ListView.builder(
+                itemCount: routes.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 10,
+                    ), // Dentro dos cards
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.location_on),
+                                const SizedBox(width: 5),
+                                Text(routes[index].bairroPartida),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(Icons.arrow_forward),
+                                const SizedBox(width: 5),
+                                Text(routes[index].bairroDestino),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(Icons.repeat),
+                                const SizedBox(width: 5),
+                                Text(
+                                  routes[index].recorrente
+                                      ? 'Recorrente'
+                                      : 'Não recorrente',
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(Icons.calendar_today),
+                                const SizedBox(width: 5),
+                                Text(_formatPeriod(routes[index].periodos)),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(_formatDate(routes[index].data)),
+                      ],
+                    ),
+                  );
+                },
+              ),
             );
           } else {
             return const Center(
@@ -51,5 +116,18 @@ class _ListRoutesState extends State<ListRoutes> {
             );
           }
         });
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+
+  String _formatPeriod(List<int> period) {
+    var periodNames = ['Manhã', 'Tarde', 'Noite'];
+
+    // Mapeando cada item para o nome correspondente e juntando com ', '
+    String result = period.map((item) => periodNames[item]).join(', ');
+
+    return result;
   }
 }

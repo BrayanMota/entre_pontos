@@ -1,4 +1,5 @@
 class RouteModel {
+  String userID;
   String id;
   DateTime data;
   bool recorrente;
@@ -9,6 +10,7 @@ class RouteModel {
   List<int> periodos;
 
   RouteModel({
+    this.userID = '',
     required this.id,
     required this.data,
     required this.recorrente,
@@ -21,7 +23,8 @@ class RouteModel {
 
   factory RouteModel.fromJson(Map<String, dynamic> json) {
     return RouteModel(
-      id: json['id'],
+      userID: json['userID'] ?? '',
+      id: json['id'] ?? '',
       data: json['data'].toDate(),
       recorrente: json['recorrente'],
       regiaoPartida: json['regiaoPartida'],
@@ -34,6 +37,7 @@ class RouteModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'userID': userID,
       'id': id,
       'data': data,
       'recorrente': recorrente,
@@ -42,6 +46,54 @@ class RouteModel {
       'regiaoDestino': regiaoDestino,
       'bairroDestino': bairroDestino,
       'periodos': periodos,
+    };
+  }
+}
+
+class MatchModel {
+  String id;
+  String userID1;
+  String userID2;
+  String routeID1;
+  String routeID2;
+  DateTime data;
+  int status1;
+  int status2;
+
+  MatchModel({
+    required this.id,
+    required this.userID1,
+    required this.userID2,
+    required this.routeID1,
+    required this.routeID2,
+    required this.data,
+    required this.status1,
+    required this.status2,
+  });
+
+  factory MatchModel.fromJson(Map<String, dynamic> json) {
+    return MatchModel(
+      id: json['id'],
+      userID1: json['userID1'],
+      userID2: json['userID2'],
+      routeID1: json['routeID1'],
+      routeID2: json['routeID2'],
+      data: json['data'].toDate(),
+      status1: json['status1'],
+      status2: json['status2'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userID1': userID1,
+      'userID2': userID2,
+      'routeID1': routeID1,
+      'routeID2': routeID2,
+      'data': data,
+      'status1': status1,
+      'status2': status2,
     };
   }
 }
