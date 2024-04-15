@@ -11,6 +11,7 @@ class ListMatchs extends StatefulWidget {
 
 class _ListMatchsState extends State<ListMatchs> {
   final RouteService _routeService = RouteService();
+  final userID = RouteService().userID;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +26,23 @@ class _ListMatchsState extends State<ListMatchs> {
           if (snapshot.hasData &&
               snapshot.data != null &&
               snapshot.data!.docs.isNotEmpty) {
-            List<RouteModel> routes = [];
+            List<MatchModel> matchs = [];
 
             for (var item in snapshot.data!.docs) {
-              routes.add(RouteModel.fromJson(item.data()));
+              matchs.add(MatchModel.fromJson(item.data()));
+            }
+
+            for (var item in matchs) {
+              if (item.userID1 == userID || item.userID1 == userID) {
+                item.id = item.userID2;
+              }
             }
 
             return Container(
               padding: const EdgeInsets.symmetric(
                   vertical: 10, horizontal: 20), // Cards
               child: ListView.builder(
-                itemCount: routes.length,
+                itemCount: matchs.length,
                 itemBuilder: (context, index) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 10),
@@ -58,40 +65,11 @@ class _ListMatchsState extends State<ListMatchs> {
                               children: [
                                 Icon(Icons.location_on),
                                 const SizedBox(width: 5),
-                                Text(routes[index].bairroPartida),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                Icon(Icons.arrow_forward),
-                                const SizedBox(width: 5),
-                                Text(routes[index].bairroDestino),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                Icon(Icons.repeat),
-                                const SizedBox(width: 5),
-                                Text(
-                                  routes[index].recorrente
-                                      ? 'Recorrente'
-                                      : 'Não recorrente',
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                Icon(Icons.calendar_today),
-                                const SizedBox(width: 5),
-                                Text(_formatPeriod(routes[index].periodos)),
+                                Text(matchs[index].id),
                               ],
                             ),
                           ],
                         ),
-                        Text(_formatDate(routes[index].data)),
                       ],
                     ),
                   );

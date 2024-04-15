@@ -14,8 +14,8 @@ class _ListRoutesState extends State<ListRoutes> {
   final RouteService _routeService = RouteService();
 
   @override
-  void initState() async {
-    await _routeService.verifyMatches();
+  void initState() {
+    // _routeService.verifyMatches();
     super.initState();
   }
 

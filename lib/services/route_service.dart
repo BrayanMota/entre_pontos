@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:entre_pontos/apps/match/functions.dart';
 import 'package:entre_pontos/apps/match/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 class RouteService {
   String userID;
@@ -37,7 +38,7 @@ class RouteService {
     // Obtém todos os trajetos do usuário
     QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
         .collection('trajeto')
-        .where('data', isGreaterThanOrEqualTo: startOfToday)
+        // .where('data', isGreaterThanOrEqualTo: startOfToday)
         .get();
 
     List<RouteModel> routes = [];
@@ -55,12 +56,13 @@ class RouteService {
       List<RouteModel> routes = groupedRoutes[key]!;
       if (routes.length > 1) {
         MatchModel matchModel = MatchModel(
-          id: Random().nextInt(999999).toString(),
+          id: const Uuid().v1(),
           userID1: routes[0].userID,
           userID2: routes[1].userID,
-          data: DateTime.now(),
+          data: routes[0].data,
           routeID1: routes[0].id,
           routeID2: routes[1].id,
+          periodo: routes[0].periodos.first,
           status1: 0,
           status2: 0,
         );
@@ -83,7 +85,7 @@ class RouteService {
     DateTime startOfToday = DateTime(now.year, now.month, now.day);
 
     return _firestore
-        .collection('trajeto')
+        .collection('match')
         .where('data', isGreaterThanOrEqualTo: startOfToday)
         .snapshots();
   }
