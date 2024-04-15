@@ -10,7 +10,7 @@ class RouteModel {
   List<int> periodos;
 
   RouteModel({
-    this.userID = '',
+    required this.userID,
     required this.id,
     required this.data,
     required this.recorrente,

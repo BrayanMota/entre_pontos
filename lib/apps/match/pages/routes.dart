@@ -15,7 +15,7 @@ class _ListRoutesState extends State<ListRoutes> {
 
   @override
   void initState() {
-    // _routeService.verifyMatches();
+    _routeService.verifyMatches();
     super.initState();
   }
 

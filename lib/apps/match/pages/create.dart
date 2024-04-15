@@ -1,5 +1,6 @@
 import 'package:entre_pontos/services/route_service.dart';
 import 'package:entre_pontos/utils/validators.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -281,6 +282,7 @@ class _RegisterMatchPageState extends State<RegisterMatchPage> {
 
   void _salvarFormulario() {
     RouteModel match = RouteModel(
+      userID: FirebaseAuth.instance.currentUser!.uid,
       id: const Uuid().v1(),
       data: DateTime.parse(_dataDesfomatada),
       recorrente: isRecorrente!,

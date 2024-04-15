@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:entre_pontos/apps/match/functions.dart';
 import 'package:entre_pontos/apps/match/models.dart';
@@ -13,8 +11,9 @@ class RouteService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> createRoute(RouteModel routeModel) async {
-    routeModel.userID = userID;
+  Future<void> createRoute(
+    RouteModel routeModel,
+  ) async {
     return await _firestore
         // .collection(userID)
         .collection('trajeto')
@@ -66,7 +65,19 @@ class RouteService {
           status1: 0,
           status2: 0,
         );
-        createMatch(matchModel);
+        // Antes de criar um match, verifica se já existe um match com esses usuários, data, periodo e rotas
+        QuerySnapshot<Map<String, dynamic>> matchSnapshot = await _firestore
+            .collection('match')
+            .where('userID1', isEqualTo: matchModel.userID1)
+            .where('userID2', isEqualTo: matchModel.userID2)
+            .where('data', isEqualTo: matchModel.data)
+            .where('periodo', isEqualTo: matchModel.periodo)
+            .where('routeID1', isEqualTo: matchModel.routeID1)
+            .where('routeID2', isEqualTo: matchModel.routeID2)
+            .get();
+
+        if (matchSnapshot.docs.isEmpty) {}
+        // createMatch(matchModel);
       }
     }
   }
@@ -79,14 +90,47 @@ class RouteService {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> listMatchs() {
-    // Obtém a data e hora atuais
-    DateTime now = DateTime.now();
-    // Ajusta para o começo do dia (meia-noite)
-    DateTime startOfToday = DateTime(now.year, now.month, now.day);
+    DateTime now = DateTime.now(); // Obtém a data e hora atuais
+    DateTime startOfToday = DateTime(
+      now.year,
+      now.month,
+      now.day,
+    ); // Ajusta para o começo do dia (meia-noite)
 
     return _firestore
         .collection('match')
         .where('data', isGreaterThanOrEqualTo: startOfToday)
+        // .where('status1', whereNotIn: [0, 2])
+        // .where('status2', whereNotIn: [0, 2])
         .snapshots();
+  }
+
+  Future<String> getUserData(String userID) async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('usuarios');
+
+    DocumentSnapshot documentSnapshot = await usersCollection.doc(userID).get();
+    if (documentSnapshot.exists) {
+      // O documento existe, você pode acessar os dados assim:
+      Map<String, dynamic>? userData =
+          documentSnapshot.data() as Map<String, dynamic>?;
+
+      // Supondo que 'displayName' é o campo que contém o nome do usuário
+      String displayName = userData?['nome'] ?? 'Não achou o nome';
+      return displayName;
+    } else {
+      return 'Sem nome';
+    }
+  }
+
+  Future<void> updateMatch(MatchModel matchModel) async {
+    return await _firestore
+        .collection('match')
+        .doc(matchModel.id)
+        .update(matchModel.toJson());
+  }
+
+  Future<void> deleteMatch(String id) async {
+    return await _firestore.collection('match').doc(id).delete();
   }
 }
