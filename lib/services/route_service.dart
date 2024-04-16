@@ -37,7 +37,7 @@ class RouteService {
     // Obtém todos os trajetos do usuário
     QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
         .collection('trajeto')
-        // .where('data', isGreaterThanOrEqualTo: startOfToday)
+        .where('data', isGreaterThanOrEqualTo: startOfToday)
         .get();
 
     List<RouteModel> routes = [];
@@ -65,6 +65,7 @@ class RouteService {
           status1: 0,
           status2: 0,
         );
+
         // Antes de criar um match, verifica se já existe um match com esses usuários, data, periodo e rotas
         QuerySnapshot<Map<String, dynamic>> matchSnapshot = await _firestore
             .collection('match')
@@ -76,8 +77,9 @@ class RouteService {
             .where('routeID2', isEqualTo: matchModel.routeID2)
             .get();
 
-        if (matchSnapshot.docs.isEmpty) {}
-        // createMatch(matchModel);
+        if (matchSnapshot.docs.isEmpty) {
+          createMatch(matchModel);
+        }
       }
     }
   }
@@ -100,8 +102,6 @@ class RouteService {
     return _firestore
         .collection('match')
         .where('data', isGreaterThanOrEqualTo: startOfToday)
-        // .where('status1', whereNotIn: [0, 2])
-        // .where('status2', whereNotIn: [0, 2])
         .snapshots();
   }
 

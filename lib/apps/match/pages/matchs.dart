@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:entre_pontos/apps/connection/models.dart';
 import 'package:entre_pontos/apps/match/models.dart';
+import 'package:entre_pontos/services/connection_service.dart';
 import 'package:entre_pontos/services/route_service.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class ListMatchs extends StatefulWidget {
   const ListMatchs({super.key});
@@ -12,6 +15,7 @@ class ListMatchs extends StatefulWidget {
 
 class _ListMatchsState extends State<ListMatchs> {
   final RouteService _routeService = RouteService();
+  final ConnectionService _connectionService = ConnectionService();
   final userID = RouteService().userID;
 
   @override
@@ -162,13 +166,23 @@ class _ListMatchsState extends State<ListMatchs> {
       if (userID1 == userID || userID2 == userID) {
         if (status1 == 1 && status2 == 1) {
           // Se os dois aceitaram, significa que houve um match e vai ser ser salvo a conexão dos dois
+          ConnectionModel connectionModel = ConnectionModel(
+            userID1: userID1,
+            userID2: userID2,
+            id: const Uuid().v1(),
+          );
+          _connectionService.createConnection(connectionModel);
         } else if (status1 == 2 || status2 == 2) {
           // Se um dos dois recusou, não vai ser salvo a conexão e o match vai ser excluído
           _routeService.deleteMatch(item.id);
         }
         if (status1 == 0 || status2 == 0) {
           matchsList.add(MatchModel.fromJson(item.data()));
+        } else {
+          print('Match já foi aceito ou recusado');
         }
+      } else {
+        print('Match não é seu');
       }
     }
 
