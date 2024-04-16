@@ -317,6 +317,7 @@ class _RegisterMatchPageState extends State<RegisterMatchPage> {
     if (_picked != null) {
       String dataFormatada = "${_picked.day}/${_picked.month}/${_picked.year}";
       _dataDesfomatada = _picked.toString();
+      print(DateTime.parse(_dataDesfomatada));
       _diaController.text = dataFormatada;
     }
   }

@@ -164,28 +164,25 @@ class _ListMatchsState extends State<ListMatchs> {
       final status1 = item.data()['status1'];
       final status2 = item.data()['status2'];
       if (userID1 == userID || userID2 == userID) {
-        if (status1 == 1 && status2 == 1) {
+        if (status1 == 2 || status2 == 2) {
+          // Se um dos dois recusou, não vai ser salvo a conexão e o match vai ser excluído
+          // _routeService.deleteMatch(item.id);
+          print('Match recusado');
+        } else if (status1 == 0 || status2 == 0) {
+          matchsList.add(MatchModel.fromJson(item.data()));
+        } else if (status1 == 1 && status2 == 1) {
           // Se os dois aceitaram, significa que houve um match e vai ser ser salvo a conexão dos dois
           ConnectionModel connectionModel = ConnectionModel(
             userID1: userID1,
             userID2: userID2,
             id: const Uuid().v1(),
           );
-          _connectionService.createConnection(connectionModel);
-        } else if (status1 == 2 || status2 == 2) {
-          // Se um dos dois recusou, não vai ser salvo a conexão e o match vai ser excluído
-          _routeService.deleteMatch(item.id);
-        }
-        if (status1 == 0 || status2 == 0) {
-          matchsList.add(MatchModel.fromJson(item.data()));
-        } else {
-          print('Match já foi aceito ou recusado');
+          _connectionService.verifyConnections(connectionModel);
         }
       } else {
         print('Match não é seu');
       }
     }
-
     return matchsList;
   }
 

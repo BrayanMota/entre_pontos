@@ -119,6 +119,8 @@ class _ListRoutesState extends State<ListRoutes> {
   }
 
   String _formatDate(DateTime date) {
+    // data com timezone, convertendo para local - 3 horas
+    // date = date.subtract(const Duration(hours: 3));
     return '${date.day}/${date.month}/${date.year}';
   }
 
