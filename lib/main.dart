@@ -1,5 +1,4 @@
 import 'package:entre_pontos/apps/auth/pages/login.dart';
-import 'package:entre_pontos/pages/bottom_navigation.dart';
 import 'package:entre_pontos/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const RotePage(),
-      // home: const BottomNavigationPage(),
     );
   }
 }
@@ -41,7 +39,7 @@ class RotePage extends StatelessWidget {
       stream: FirebaseAuth.instance.userChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const BottomNavigationPage();
+          return const HomePage();
         } else {
           return const LoginPage();
         }

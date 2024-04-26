@@ -39,8 +39,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(
-        key: const Key('HomeDrawer'),
+      drawer: const CustomDrawer(
+        key: Key('HomeDrawer'),
       ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

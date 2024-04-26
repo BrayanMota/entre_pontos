@@ -1,5 +1,5 @@
 import 'package:entre_pontos/apps/match/pages/index.dart';
-import 'package:entre_pontos/apps/connection/list.dart';
+import 'package:entre_pontos/apps/connection/pages/list.dart';
 import 'package:entre_pontos/pages/home.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   final _pages = <Widget>[
     const MatchPage(),
     const HomePage(),
-    const ConnectionsPage(),
+    // const ConnectionsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -39,10 +39,10 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Conexões',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.people),
+          //   label: 'Conexões',
+          // ),
         ],
         currentIndex: 1,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
