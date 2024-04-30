@@ -61,9 +61,9 @@ class MeetingPointService {
     required MeetingPointModel meetingPointModel,
   }) async {
     List<String> users = meetingPointModel.users;
-    // if (users.contains(userID)) {
-    //   return;
-    // }
+    if (users.contains(userID)) {
+      return;
+    }
     users.add(userID);
     return await _firestore
         .collection('ponto_encontro')

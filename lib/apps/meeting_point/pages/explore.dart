@@ -1,4 +1,4 @@
-import 'package:entre_pontos/apps/auth/model.dart';
+import 'package:entre_pontos/apps/users/model.dart';
 import 'package:entre_pontos/apps/meeting_point/model.dart';
 import 'package:entre_pontos/services/meeting_point_service.dart';
 import 'package:flutter/material.dart';
@@ -177,14 +177,18 @@ class CustomMeetingPointModal extends StatelessWidget {
                   usuarios.add(UsuarioModel.fromJson(item.data()));
                 }
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: usuarios.length,
-                  itemBuilder: (context, index) {
-                    return CircleAvatar(
-                      child: Text(_take3Chars(usuarios[index].nome)),
-                    );
-                  },
+                return SizedBox(
+                  height: 50,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: usuarios.length,
+                    itemBuilder: (context, index) {
+                      return CircleAvatar(
+                        child: Text(_take3Chars(usuarios[index].nome)),
+                      );
+                    },
+                  ),
                 );
               } else {
                 return const Center(
