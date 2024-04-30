@@ -1,6 +1,7 @@
 import 'package:entre_pontos/apps/auth/pages/login.dart';
 import 'package:entre_pontos/apps/match/pages/index.dart';
 import 'package:entre_pontos/apps/meeting_point/pages/index.dart';
+import 'package:entre_pontos/apps/users/pages/discover.dart';
 import 'package:entre_pontos/pages/home.dart';
 import 'package:entre_pontos/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,18 @@ class CustomDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const MeetingPointPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.search),
+            title: const Text('Descobrir'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DiscoverUsersPage(),
                 ),
               );
             },

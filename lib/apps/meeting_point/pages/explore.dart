@@ -171,10 +171,10 @@ class CustomMeetingPointModal extends StatelessWidget {
               if (snapshot.hasData &&
                   snapshot.data != null &&
                   snapshot.data!.docs.isNotEmpty) {
-                List<UsuarioModel> usuarios = [];
+                List<UserModal> usuarios = [];
 
                 for (var item in snapshot.data!.docs) {
-                  usuarios.add(UsuarioModel.fromJson(item.data()));
+                  usuarios.add(UserModal.fromJson(item.data()));
                 }
 
                 return SizedBox(

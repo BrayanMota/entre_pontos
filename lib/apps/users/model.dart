@@ -1,16 +1,16 @@
-class UsuarioModel {
+class UserModal {
   String id;
   String nome;
   String email;
 
-  UsuarioModel({
+  UserModal({
     required this.id,
     required this.nome,
     required this.email,
   });
 
-  factory UsuarioModel.fromJson(Map<String, dynamic> json) {
-    return UsuarioModel(
+  factory UserModal.fromJson(Map<String, dynamic> json) {
+    return UserModal(
       id: json['uid'],
       nome: json['nome'],
       email: json['email'],
