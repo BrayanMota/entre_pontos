@@ -1,3 +1,4 @@
+import 'package:entre_pontos/apps/meeting_point/pages/create.dart';
 import 'package:entre_pontos/apps/meeting_point/pages/explore.dart';
 import 'package:entre_pontos/apps/meeting_point/pages/list.dart';
 import 'package:entre_pontos/custom/custom_drawer.dart';
@@ -47,7 +48,12 @@ class _MeetingPointPageState extends State<MeetingPointPage>
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Navigator.pushNamed(context, '/meeting_point/create');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RegisterMeetingPointPage(),
+              ),
+            );
           },
           child: const Icon(Icons.add),
         ),

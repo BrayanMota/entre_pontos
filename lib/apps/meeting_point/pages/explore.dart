@@ -1,3 +1,6 @@
+import 'package:entre_pontos/apps/auth/model.dart';
+import 'package:entre_pontos/apps/meeting_point/model.dart';
+import 'package:entre_pontos/services/meeting_point_service.dart';
 import 'package:flutter/material.dart';
 
 class ExploreMeetingPointsPage extends StatefulWidget {
@@ -9,95 +12,227 @@ class ExploreMeetingPointsPage extends StatefulWidget {
 }
 
 class _ExploreMeetingPointsPageState extends State<ExploreMeetingPointsPage> {
+  final MeetingPointService _meetingPointService = MeetingPointService();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        CardMeetingPoint(
-          partida: 'CT',
-          chegada: 'UFRJ',
-          periodo: 'Manhã',
-          quantidade: 2,
-        ),
-        CardMeetingPoint(
-          partida: 'CCMN',
-          chegada: 'UFRJ',
-          periodo: 'Tarde',
-          quantidade: 3,
-        ),
-        CardMeetingPoint(
-          partida: 'Piratininga',
-          chegada: 'Níteroi',
-          periodo: 'Noite',
-          quantidade: 4,
-        ),
-      ],
+    return StreamBuilder(
+      stream: _meetingPointService.listMeetingPoints(todos: true),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasData &&
+            snapshot.data != null &&
+            snapshot.data!.docs.isNotEmpty) {
+          List<MeetingPointModel> meetingpoints = [];
+
+          for (var item in snapshot.data!.docs) {
+            meetingpoints.add(MeetingPointModel.fromJson(item.data()));
+          }
+
+          return Container(
+            padding: const EdgeInsets.symmetric(
+                vertical: 10, horizontal: 20), // Cards
+            child: ListView.builder(
+              itemCount: meetingpoints.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return CustomMeetingPointModal(
+                          meetingPointModel: meetingpoints[index],
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 10,
+                    ), // Dentro dos cards
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on),
+                                const SizedBox(width: 5),
+                                Text(meetingpoints[index].partida),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                const Icon(Icons.arrow_forward),
+                                const SizedBox(width: 5),
+                                Text(meetingpoints[index].chegada),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                                'Participantes: ${meetingpoints[index].users.length}'),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(_formatDate(meetingpoints[index].data)),
+                            const SizedBox(height: 5),
+                            Text(meetingpoints[index].hora),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        } else {
+          return const Center(
+            child: Text(
+              'Nenhum registro encontrado',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          );
+        }
+      },
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
   }
 }
 
-class CardMeetingPoint extends StatelessWidget {
-  final String partida;
-  final String chegada;
-  final String periodo;
-  final int quantidade;
+class CustomMeetingPointModal extends StatelessWidget {
+  final MeetingPointService _meetingPointService = MeetingPointService();
+  MeetingPointModel meetingPointModel;
 
-  const CardMeetingPoint({
-    required this.partida,
-    required this.chegada,
-    required this.periodo,
-    required this.quantidade,
+  CustomMeetingPointModal({
+    required this.meetingPointModel,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          const EdgeInsets.symmetric(vertical: 10, horizontal: 20), // Cards
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.symmetric(
-          vertical: 25,
-          horizontal: 10,
-        ), // Dentro dos cards
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '$partida - $chegada',
-                  style: const TextStyle(
-                    fontSize: 18.0,
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 20,
+      ),
+      child: Column(
+        children: [
+          const Text(
+            'Confirmar presença?',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Deseja confirmar presença neste ponto de encontro?',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 20),
+          StreamBuilder(
+            stream: _meetingPointService.searchUsersInMeetingPoint(
+              users: meetingPointModel.users,
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData &&
+                  snapshot.data != null &&
+                  snapshot.data!.docs.isNotEmpty) {
+                List<UsuarioModel> usuarios = [];
+
+                for (var item in snapshot.data!.docs) {
+                  usuarios.add(UsuarioModel.fromJson(item.data()));
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: usuarios.length,
+                  itemBuilder: (context, index) {
+                    return CircleAvatar(
+                      child: Text(_take3Chars(usuarios[index].nome)),
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: Text(
+                    'Nenhum registro encontrado',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Voltar'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _meetingPointService.addUserToMeetingPoint(
+                    meetingPointModel: meetingPointModel,
+                  );
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+                child: const Text(
+                  'Confirmar presença',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
                 ),
-                Text(
-                  periodo,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            // ListView.builder(
-            //   physics: const NeverScrollableScrollPhysics(),
-            //   itemCount: quantidade,
-            //   itemBuilder: (context, index) {
-            //     return const Icon(
-            //       Icons.person,
-            //       size: 30,
-            //     );
-            //   },
-            // ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
+  }
+
+  String _take3Chars(String text) {
+    return text.substring(0, 3);
   }
 }
