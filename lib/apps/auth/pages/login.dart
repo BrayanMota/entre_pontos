@@ -1,9 +1,7 @@
-import 'package:entre_pontos/pages/bottom_navigation.dart';
+import 'package:entre_pontos/apps/auth/pages/register.dart';
+import 'package:entre_pontos/pages/home.dart';
 import 'package:entre_pontos/services/auth_service.dart';
 import 'package:flutter/material.dart';
-
-import '../../../pages/home.dart';
-import 'register.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -138,7 +136,7 @@ class CardLogin extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const BottomNavigationPage(),
+              builder: (context) => const HomePage(),
             ),
           );
         }
