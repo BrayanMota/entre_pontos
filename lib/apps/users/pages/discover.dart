@@ -47,6 +47,7 @@ class _DiscoverUsersPageState extends State<DiscoverUsersPage>
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
                 StreamBuilder(
                   stream: _userService.listUsers(),
                   builder: (context, snapshot) {
@@ -64,30 +65,35 @@ class _DiscoverUsersPageState extends State<DiscoverUsersPage>
                         users.add(UserModal.fromJson(item.data()));
                       }
 
-                      return ListView.builder(
-                        itemCount: users.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              height: 100,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 15,
-                                horizontal: 10,
-                              ), // Dentro dos cards
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
+                      return Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: users.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      // users[index].foto,
+                                      'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
+                                    ),
+                                  ),
+                                  title: Text(users[index].nome),
+                                  subtitle: Text(users[index].email),
+                                ),
                               ),
-                              child: ListTile(
-                                title: Text(users[index].nome),
-                                subtitle: Text(users[index].email),
-                              ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       );
                     } else {
                       return const Center(
