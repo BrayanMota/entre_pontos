@@ -37,12 +37,15 @@ class CardLogin extends StatelessWidget {
     return Center(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        // color: Colors.blue,
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'assets/icons/logo.png',
+                height: 100,
+              ),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

@@ -31,7 +31,7 @@ class CardRegister extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  final AuthService _AuthService = AuthService();
+  final AuthService _authService = AuthService();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -151,7 +151,7 @@ class CardRegister extends StatelessWidget {
     String email = _emailController.text;
     String senha = _senhaController.text;
 
-    _AuthService.criarUsuario(nome, email, senha).then((String? erro) {
+    _authService.criarUsuario(nome, email, senha).then((String? erro) {
       if (erro != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

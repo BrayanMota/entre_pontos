@@ -1,17 +1,17 @@
-import 'package:entre_pontos/apps/meeting_point/pages/create.dart';
-import 'package:entre_pontos/apps/meeting_point/pages/explore.dart';
-import 'package:entre_pontos/apps/meeting_point/pages/list.dart';
+import 'package:entre_pontos/apps/interest_point/pages/create.dart';
+import 'package:entre_pontos/apps/interest_point/pages/explore.dart';
+import 'package:entre_pontos/apps/interest_point/pages/list.dart';
 import 'package:entre_pontos/custom/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
-class MeetingPointPage extends StatefulWidget {
-  const MeetingPointPage({super.key});
+class InterestPointPage extends StatefulWidget {
+  const InterestPointPage({super.key});
 
   @override
-  State<MeetingPointPage> createState() => _MeetingPointPageState();
+  State<InterestPointPage> createState() => _InterestPointPageState();
 }
 
-class _MeetingPointPageState extends State<MeetingPointPage>
+class _InterestPointPageState extends State<InterestPointPage>
     with TickerProviderStateMixin {
   late final TabController _tabController;
 
@@ -35,7 +35,7 @@ class _MeetingPointPageState extends State<MeetingPointPage>
       },
       child: Scaffold(
         drawer: const CustomDrawer(
-          key: Key('MatchingPointDrawer'),
+          key: Key('InterestPointDrawer'),
         ),
         appBar: AppBar(
           centerTitle: true,
@@ -51,7 +51,7 @@ class _MeetingPointPageState extends State<MeetingPointPage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RegisterMeetingPointPage(),
+                builder: (context) => const RegisterInterestPointPage(),
               ),
             );
           },
@@ -64,15 +64,15 @@ class _MeetingPointPageState extends State<MeetingPointPage>
               text: 'Explorar',
             ),
             Tab(
-              text: 'Meus pontos de encontro',
+              text: 'Meus pontos de interesse',
             ),
           ],
         ),
         body: TabBarView(
           controller: _tabController,
           children: const <Widget>[
-            ExploreMeetingPointsPage(),
-            MyMeetingPointsPage()
+            ExploreInterestPointsPage(),
+            MyInterestPointsPage()
           ],
         ),
       ),

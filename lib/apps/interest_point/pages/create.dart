@@ -1,25 +1,25 @@
-import 'package:entre_pontos/apps/meeting_point/model.dart';
-import 'package:entre_pontos/services/meeting_point_service.dart';
+import 'package:entre_pontos/apps/interest_point/model.dart';
+import 'package:entre_pontos/services/interest_point_service.dart';
 import 'package:entre_pontos/utils/validators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class RegisterMeetingPointPage extends StatefulWidget {
-  const RegisterMeetingPointPage({super.key});
+class RegisterInterestPointPage extends StatefulWidget {
+  const RegisterInterestPointPage({super.key});
 
   @override
-  State<RegisterMeetingPointPage> createState() =>
-      _RegisterMeetingPointPageState();
+  State<RegisterInterestPointPage> createState() =>
+      _RegisterInterestPointPageState();
 }
 
-class _RegisterMeetingPointPageState extends State<RegisterMeetingPointPage> {
+class _RegisterInterestPointPageState extends State<RegisterInterestPointPage> {
   final _formKey = GlobalKey<FormState>();
 
   String _dataDesfomatada = '';
   final TextEditingController _diaController = TextEditingController();
-  final TextEditingController _partidaController = TextEditingController();
-  final TextEditingController _destinoController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _horarioChegadaController =
       TextEditingController();
 
@@ -38,7 +38,7 @@ class _RegisterMeetingPointPageState extends State<RegisterMeetingPointPage> {
           ),
           centerTitle: true,
           title: const Text(
-            'Ponto de Encontro',
+            'Ponto de Interesse',
             style: TextStyle(
                 // fontSize: 16,
                 // fontWeight: FontWeight.bold,
@@ -106,14 +106,14 @@ class _RegisterMeetingPointPageState extends State<RegisterMeetingPointPage> {
               ),
               const SizedBox(height: 10),
               InputLabel(
-                label: 'Local de Partida',
-                hintText: 'Informe o local de partida',
-                controller: _partidaController,
+                label: 'Local',
+                hintText: 'Informe o local',
+                controller: _placeController,
               ),
               InputLabel(
-                label: 'Local de Destino',
-                hintText: 'Informe o local de destino',
-                controller: _destinoController,
+                label: 'Descrição',
+                hintText: 'Adicione uma descrição do local',
+                controller: _descriptionController,
               ),
               const SizedBox(height: 10),
               Align(
@@ -139,22 +139,22 @@ class _RegisterMeetingPointPageState extends State<RegisterMeetingPointPage> {
   }
 
   void _salvarFormulario() {
-    MeetingPointModel meetingPoint = MeetingPointModel(
+    InterestPointModel interestPoint = InterestPointModel(
       userID: FirebaseAuth.instance.currentUser!.uid,
       id: const Uuid().v1(),
       data: DateTime.parse(_dataDesfomatada),
       hora: _horarioChegadaController.text,
-      partida: _partidaController.text,
-      chegada: _destinoController.text,
+      local: _placeController.text,
+      descricao: _descriptionController.text,
       users: [
         FirebaseAuth.instance.currentUser!.uid,
       ],
     );
 
-    MeetingPointService().createMeetingPoint(meetingPoint).then((value) {
+    InterestPointService().createInterestPoint(interestPoint).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Ponto de encontro cadastrado com sucesso!'),
+          content: Text('Ponto de interesse cadastrado com sucesso!'),
         ),
       );
       Navigator.pop(context);

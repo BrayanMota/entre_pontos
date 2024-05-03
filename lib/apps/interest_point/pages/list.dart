@@ -1,17 +1,16 @@
-import 'package:entre_pontos/apps/users/model.dart';
-import 'package:entre_pontos/apps/meeting_point/model.dart';
-import 'package:entre_pontos/services/meeting_point_service.dart';
+import 'package:entre_pontos/apps/interest_point/model.dart';
+import 'package:entre_pontos/services/interest_point_service.dart';
 import 'package:flutter/material.dart';
 
-class MyMeetingPointsPage extends StatefulWidget {
-  const MyMeetingPointsPage({super.key});
+class MyInterestPointsPage extends StatefulWidget {
+  const MyInterestPointsPage({super.key});
 
   @override
-  State<MyMeetingPointsPage> createState() => _MyMeetingPointsPageState();
+  State<MyInterestPointsPage> createState() => _MyInterestPointsPageState();
 }
 
-class _MyMeetingPointsPageState extends State<MyMeetingPointsPage> {
-  final MeetingPointService _meetingPointService = MeetingPointService();
+class _MyInterestPointsPageState extends State<MyInterestPointsPage> {
+  final InterestPointService _interestPointService = InterestPointService();
 
   @override
   void initState() {
@@ -21,7 +20,7 @@ class _MyMeetingPointsPageState extends State<MyMeetingPointsPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: _meetingPointService.listMeetingPoints(),
+        stream: _interestPointService.listInterestPoints(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -31,25 +30,25 @@ class _MyMeetingPointsPageState extends State<MyMeetingPointsPage> {
           if (snapshot.hasData &&
               snapshot.data != null &&
               snapshot.data!.docs.isNotEmpty) {
-            List<MeetingPointModel> meetingpoints = [];
+            List<InterestPointModel> interestpoints = [];
 
             for (var item in snapshot.data!.docs) {
-              meetingpoints.add(MeetingPointModel.fromJson(item.data()));
+              interestpoints.add(InterestPointModel.fromJson(item.data()));
             }
 
             return Container(
               padding: const EdgeInsets.symmetric(
                   vertical: 10, horizontal: 20), // Cards
               child: ListView.builder(
-                itemCount: meetingpoints.length,
+                itemCount: interestpoints.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return CustomMeetingPointModal(
-                            meetingPointModel: meetingpoints[index],
+                          return CustomInterestPointModal(
+                            interestPointModel: interestpoints[index],
                           );
                         },
                       );
@@ -75,27 +74,27 @@ class _MyMeetingPointsPageState extends State<MyMeetingPointsPage> {
                                 children: [
                                   const Icon(Icons.location_on),
                                   const SizedBox(width: 5),
-                                  Text(meetingpoints[index].partida),
+                                  Text(interestpoints[index].local),
                                 ],
                               ),
                               const SizedBox(height: 5),
                               Row(
                                 children: [
-                                  const Icon(Icons.arrow_forward),
+                                  const Icon(Icons.description),
                                   const SizedBox(width: 5),
-                                  Text(meetingpoints[index].chegada),
+                                  Text(interestpoints[index].descricao),
                                 ],
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                  'Participantes: ${meetingpoints[index].users.length}'),
+                                  'Participantes: ${interestpoints[index].users.length}'),
                             ],
                           ),
                           Column(
                             children: [
-                              Text(_formatDate(meetingpoints[index].data)),
+                              Text(_formatDate(interestpoints[index].data)),
                               const SizedBox(height: 5),
-                              Text(meetingpoints[index].hora),
+                              Text(interestpoints[index].hora),
                             ],
                           ),
                         ],
@@ -123,12 +122,12 @@ class _MyMeetingPointsPageState extends State<MyMeetingPointsPage> {
   }
 }
 
-class CustomMeetingPointModal extends StatelessWidget {
-  final MeetingPointService _meetingPointService = MeetingPointService();
-  MeetingPointModel meetingPointModel;
+class CustomInterestPointModal extends StatelessWidget {
+  final InterestPointService _interestPointService = InterestPointService();
+  InterestPointModel interestPointModel;
 
-  CustomMeetingPointModal({
-    required this.meetingPointModel,
+  CustomInterestPointModal({
+    required this.interestPointModel,
     super.key,
   });
 
@@ -167,7 +166,7 @@ class CustomMeetingPointModal extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _meetingPointService.deleteMeetingPoint(meetingPointModel);
+                  _interestPointService.deleteInterestPoint(interestPointModel);
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
