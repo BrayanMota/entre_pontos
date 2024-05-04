@@ -1,4 +1,4 @@
-import 'package:entre_pontos/apps/users/model.dart';
+import 'package:entre_pontos/apps/user/model.dart';
 import 'package:entre_pontos/custom/custom_drawer.dart';
 import 'package:entre_pontos/services/user_service.dart';
 import 'package:flutter/material.dart';

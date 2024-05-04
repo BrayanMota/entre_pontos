@@ -10,6 +10,9 @@ class AuthService {
 
   Future<String?> login(String email, String senha) async {
     try {
+      if (email.isEmpty || senha.isEmpty) {
+        return 'Preencha todos os campos';
+      }
       await _auth.signInWithEmailAndPassword(email: email, password: senha);
       return null;
     } on FirebaseAuthException catch (e) {
@@ -29,6 +32,7 @@ class AuthService {
     try {
       UserCredential user = await _auth.createUserWithEmailAndPassword(
           email: email, password: senha);
+      await _auth.signInWithEmailAndPassword(email: email, password: senha);
       if (user.user != null) {
         await user.user!.updateDisplayName(nome);
       }

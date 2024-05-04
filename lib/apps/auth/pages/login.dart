@@ -43,6 +43,10 @@ class CardLogin extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'assets/icons/logo.png',
+                width: 200,
+              ),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -56,18 +60,22 @@ class CardLogin extends StatelessWidget {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'E-mail',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               TextFormField(
                 obscureText: true,
                 controller: _senhaController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Senha',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
               // Align(
@@ -127,6 +135,7 @@ class CardLogin extends StatelessWidget {
           .login(_emailController.text, _senhaController.text)
           .then((String? erro) {
         if (erro != null) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(erro),

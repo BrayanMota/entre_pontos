@@ -1,9 +1,7 @@
-import 'package:entre_pontos/apps/auth/pages/login.dart';
+import 'package:entre_pontos/apps/auth/pages/studant_verify.dart';
 import 'package:entre_pontos/services/auth_service.dart';
 import 'package:entre_pontos/utils/validators.dart';
 import 'package:flutter/material.dart';
-
-import 'verify.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -25,13 +23,13 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class CardRegister extends StatelessWidget {
-  // TextEditingController _dateController = TextEditingController();
-  // TextEditingController _instituicaoController = TextEditingController();
+  // final TextEditingController _dateController = TextEditingController();
+  // final TextEditingController _instituicaoController = TextEditingController();
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  final AuthService _AuthService = AuthService();
+  final AuthService _authService = AuthService();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -58,23 +56,28 @@ class CardRegister extends StatelessWidget {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _nomeController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Nome Completo',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 validator: CustomValidators.validarCampoObrigatorio,
               ),
               const SizedBox(height: 10),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'E-mail',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 validator: CustomValidators.validarEmail,
               ),
+              // const SizedBox(height: 10),
               // TextField(
-              //   decoration: InputDecoration(
+              //   decoration: const InputDecoration(
               //     labelText: 'Data de Nascimento',
               //     border: OutlineInputBorder(),
               //   ),
@@ -84,15 +87,18 @@ class CardRegister extends StatelessWidget {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _senhaController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Senha',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 obscureText: true,
                 validator: CustomValidators.validarCampoObrigatorio,
               ),
+              // const SizedBox(height: 10),
               // DropdownButtonFormField<String>(
-              //   decoration: InputDecoration(
+              //   decoration: const InputDecoration(
               //     labelText: 'Instituição',
               //     border: OutlineInputBorder(),
               //   ),
@@ -118,12 +124,6 @@ class CardRegister extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => VerifyPage(),
-                      //   ),
-                      // );
                       _validarCampos(context);
                     },
                     child: const Text(
@@ -151,7 +151,7 @@ class CardRegister extends StatelessWidget {
     String email = _emailController.text;
     String senha = _senhaController.text;
 
-    _AuthService.criarUsuario(nome, email, senha).then((String? erro) {
+    _authService.criarUsuario(nome, email, senha).then((String? erro) {
       if (erro != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -164,11 +164,10 @@ class CardRegister extends StatelessWidget {
             content: Text('Usuário criado com sucesso'),
           ),
         );
-        const Duration(seconds: 2);
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const LoginPage(),
+            builder: (context) => const VerifyPage(),
           ),
         );
       }

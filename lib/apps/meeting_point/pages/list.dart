@@ -1,6 +1,6 @@
-import 'package:entre_pontos/apps/users/model.dart';
+import 'package:entre_pontos/apps/user/model.dart';
 import 'package:entre_pontos/apps/meeting_point/model.dart';
-import 'package:entre_pontos/services/meeting_point_service.dart';
+import 'package:entre_pontos/services/_point_service.dart';
 import 'package:flutter/material.dart';
 
 class MyMeetingPointsPage extends StatefulWidget {

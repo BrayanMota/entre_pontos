@@ -1,4 +1,5 @@
 import 'package:entre_pontos/apps/auth/pages/login.dart';
+import 'package:entre_pontos/apps/auth/pages/studant_verify.dart';
 import 'package:entre_pontos/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xff5297FF),
+        ),
         useMaterial3: true,
       ),
-      home: const RotePage(),
+      // home: const RotePage(),
+      home: const VerifyPage(),
     );
   }
 }
