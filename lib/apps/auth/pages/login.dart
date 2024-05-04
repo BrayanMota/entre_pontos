@@ -37,7 +37,6 @@ class CardLogin extends StatelessWidget {
     return Center(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        // color: Colors.blue,
         child: Form(
           key: _formKey,
           child: Column(

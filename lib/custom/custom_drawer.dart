@@ -1,7 +1,8 @@
 import 'package:entre_pontos/apps/auth/pages/login.dart';
 import 'package:entre_pontos/apps/match/pages/index.dart';
-import 'package:entre_pontos/apps/meeting_point/pages/index.dart';
+import 'package:entre_pontos/apps/interest_point/pages/index.dart';
 import 'package:entre_pontos/apps/user/pages/discover.dart';
+import 'package:entre_pontos/apps/user/pages/profile.dart';
 import 'package:entre_pontos/pages/home.dart';
 import 'package:entre_pontos/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +57,12 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.place),
-            title: const Text('Pontos de Encontro'),
+            title: const Text('Pontos de Interesse'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MeetingPointPage(),
+                  builder: (context) => const InterestPointPage(),
                 ),
               );
             },
@@ -79,6 +80,18 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           const Divider(),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text('Perfil'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            },
+          ),
           ListTile(
             title: const Text('Sair'),
             leading: const Icon(Icons.exit_to_app),

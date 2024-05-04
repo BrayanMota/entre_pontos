@@ -33,8 +33,8 @@ class _MatchPageState extends State<MatchPage> with TickerProviderStateMixin {
         await Future.delayed(const Duration(seconds: 1));
       },
       child: Scaffold(
-        drawer: CustomDrawer(
-          key: const Key('HomeDrawer'),
+        drawer: const CustomDrawer(
+          key: Key('HomeDrawer'),
         ),
         appBar: AppBar(
           centerTitle: true,

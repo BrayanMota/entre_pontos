@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:entre_pontos/apps/connection/models.dart';
 import 'package:entre_pontos/apps/match/models.dart';
 import 'package:entre_pontos/services/connection_service.dart';

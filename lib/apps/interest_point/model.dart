@@ -1,30 +1,30 @@
-class MeetingPointModel {
+class InterestPointModel {
   String userID;
   String id;
   DateTime data;
   String hora;
-  String partida;
-  String chegada;
+  String local;
+  String descricao;
   List<String> users;
 
-  MeetingPointModel({
+  InterestPointModel({
     required this.userID,
     required this.id,
     required this.data,
     required this.hora,
-    required this.partida,
-    required this.chegada,
+    required this.local,
+    required this.descricao,
     this.users = const [],
   });
 
-  factory MeetingPointModel.fromJson(Map<String, dynamic> json) {
-    return MeetingPointModel(
+  factory InterestPointModel.fromJson(Map<String, dynamic> json) {
+    return InterestPointModel(
       userID: json['userID'] ?? '',
       id: json['id'] ?? '',
       data: json['data'].toDate(),
       hora: json['hora'],
-      partida: json['partida'],
-      chegada: json['chegada'],
+      local: json['local'],
+      descricao: json['descricao'],
       users: json['users'].cast<String>(),
     );
   }
@@ -35,8 +35,8 @@ class MeetingPointModel {
       'id': id,
       'data': data,
       'hora': hora,
-      'partida': partida,
-      'chegada': chegada,
+      'local': local,
+      'descricao': descricao,
       'users': users,
     };
   }
