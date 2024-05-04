@@ -23,8 +23,8 @@ class CustomDrawer extends StatelessWidget {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://avatars.githubusercontent.com/u/57840634?v=4',
+                  image: AssetImage(
+                    'assets/icons/logo.png',
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -45,24 +45,24 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.people),
-            title: const Text('Matchings'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MatchPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.place),
             title: const Text('Pontos de Interesse'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const InterestPointPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.place),
+            title: const Text('Trajetos'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MatchPage(),
                 ),
               );
             },
@@ -78,6 +78,16 @@ class CustomDrawer extends StatelessWidget {
                 ),
               );
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.chat),
+            title: const Text('Chat'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notificações'),
+            onTap: () {},
           ),
           const Divider(),
           ListTile(

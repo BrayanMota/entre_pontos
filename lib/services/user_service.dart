@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:entre_pontos/apps/user/model.dart';
 
 class UserService {
   // String userID;
@@ -8,13 +8,23 @@ class UserService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> createUser(String name, String email, String id) async {
+    await _firestore.collection('usuario').doc(id).set({
+      'name': name,
+      'email': email,
+      'uid': id,
+    });
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> listUsers() {
     return _firestore.collection('usuario').snapshots();
   }
 
   Future<void> updateTags(List tags) async {
-    String userID = 'HGBalCOEImTlNAft5C1ZyOzzN673';
-    await _firestore.collection('usuario').doc(userID).update({
+    await _firestore
+        .collection('usuario')
+        .doc('c0eQ4jLeZQgspBvWZ4NMA8najiO2')
+        .update({
       'tags': tags,
     });
   }

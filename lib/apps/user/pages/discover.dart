@@ -59,10 +59,10 @@ class _DiscoverUsersPageState extends State<DiscoverUsersPage>
                     if (snapshot.hasData &&
                         snapshot.data != null &&
                         snapshot.data!.docs.isNotEmpty) {
-                      List<UserModal> users = [];
+                      List<UserModel> users = [];
 
                       for (var item in snapshot.data!.docs) {
-                        users.add(UserModal.fromJson(item.data()));
+                        users.add(UserModel.fromJson(item.data()));
                       }
 
                       return Expanded(

@@ -180,10 +180,10 @@ class CustomInterestPointModal extends StatelessWidget {
               if (snapshot.hasData &&
                   snapshot.data != null &&
                   snapshot.data!.docs.isNotEmpty) {
-                List<UserModal> usuarios = [];
+                List<UserModel> usuarios = [];
 
                 for (var item in snapshot.data!.docs) {
-                  usuarios.add(UserModal.fromJson(item.data()));
+                  usuarios.add(UserModel.fromJson(item.data()));
                 }
 
                 return SizedBox(

@@ -1,18 +1,19 @@
-class UserModal {
+class UserModel {
   String id;
   String nome;
   String email;
+  List<String> tags = [];
 
-  UserModal({
+  UserModel({
     required this.id,
     required this.nome,
     required this.email,
   });
 
-  factory UserModal.fromJson(Map<String, dynamic> json) {
-    return UserModal(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       id: json['uid'],
-      nome: json['nome'],
+      nome: json['name'],
       email: json['email'],
     );
   }
