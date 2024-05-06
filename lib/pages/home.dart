@@ -38,67 +38,70 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const CustomDrawer(
-        key: Key('HomeDrawer'),
-      ),
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        centerTitle: true,
-        title: Container(
-          width: 130,
-          height: 130,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: NetworkImage(
-                'https://avatars.githubusercontent.com/u/57840634?v=4',
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        drawer: const CustomDrawer(
+          key: Key('HomeDrawer'),
+        ),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          centerTitle: true,
+          title: Container(
+            width: 130,
+            height: 130,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: NetworkImage(
+                  'https://avatars.githubusercontent.com/u/57840634?v=4',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
             ),
           ),
         ),
-      ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                nome,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+        body: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  nome,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              Text(
-                email,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Check-in'),
-              ),
-              const SizedBox(height: 20),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Estudante da Instituição',
-                  style: TextStyle(
+                Text(
+                  email,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-              ),
-              _buildConnections(),
-              const Divider(),
-              const Text(
-                  'Seja livre para colocar as coisas que você gosta. Mostre para os outros seus hobbies e se apresente'),
-            ],
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Check-in'),
+                ),
+                const SizedBox(height: 20),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Estudante da Instituição',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                _buildConnections(),
+                const Divider(),
+                const Text(
+                    'Seja livre para colocar as coisas que você gosta. Mostre para os outros seus hobbies e se apresente'),
+              ],
+            ),
           ),
         ),
       ),
