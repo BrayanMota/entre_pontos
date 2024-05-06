@@ -1,4 +1,5 @@
 import 'package:entre_pontos/apps/auth/pages/studant_verify.dart';
+import 'package:entre_pontos/apps/user/model.dart';
 import 'package:entre_pontos/services/auth_service.dart';
 import 'package:entre_pontos/utils/validators.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,6 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class CardRegister extends StatelessWidget {
-  // final TextEditingController _dateController = TextEditingController();
-  // final TextEditingController _instituicaoController = TextEditingController();
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
@@ -33,14 +32,11 @@ class CardRegister extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  static const List<String> items = ['UFRJ', 'UFF', 'USP'];
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        // color: Colors.blue,
         child: Form(
           key: _formKey,
           child: Column(
@@ -75,15 +71,6 @@ class CardRegister extends StatelessWidget {
                 ),
                 validator: CustomValidators.validarEmail,
               ),
-              // const SizedBox(height: 10),
-              // TextField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Data de Nascimento',
-              //     border: OutlineInputBorder(),
-              //   ),
-              //   onTap: () => _selectData(context),
-              //   controller: _dateController,
-              // ),
               const SizedBox(height: 10),
               TextFormField(
                 controller: _senhaController,
@@ -94,22 +81,8 @@ class CardRegister extends StatelessWidget {
                   ),
                 ),
                 obscureText: true,
-                validator: CustomValidators.validarCampoObrigatorio,
+                validator: CustomValidators.validarSenha,
               ),
-              // const SizedBox(height: 10),
-              // DropdownButtonFormField<String>(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Instituição',
-              //     border: OutlineInputBorder(),
-              //   ),
-              //   items: items.map((String value) {
-              //     return DropdownMenuItem<String>(
-              //       value: value,
-              //       child: Text(value),
-              //     );
-              //   }).toList(),
-              //   onChanged: (String? value) {},
-              // ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,7 +100,6 @@ class CardRegister extends StatelessWidget {
                       _validarCampos(context);
                     },
                     child: const Text(
-                      // 'Continuar',
                       'Cadastrar',
                     ),
                   ),
@@ -147,44 +119,20 @@ class CardRegister extends StatelessWidget {
   }
 
   void _salvarCadastro(BuildContext context) {
-    String nome = _nomeController.text;
-    String email = _emailController.text;
-    String senha = _senhaController.text;
-
-    _authService.criarUsuario(nome, email, senha).then((String? erro) {
-      if (erro != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(erro),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Usuário criado com sucesso'),
-          ),
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const VerifyPage(),
-          ),
-        );
-      }
-    });
+    UserModel user = UserModel(
+      id: '',
+      nome: _nomeController.text,
+      email: _emailController.text,
+      senha: _senhaController.text,
+      tags: [],
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerifyPage(
+          user: user,
+        ),
+      ),
+    );
   }
-
-  // Future<void> _selectData(BuildContext context) async {
-  //   DateTime? _picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2100),
-  //   );
-
-  //   if (_picked != null) {
-  //     String dataFormatada = "${_picked.day}/${_picked.month}/${_picked.year}";
-  //     _dateController.text = dataFormatada;
-  //   }
-  // }
 }

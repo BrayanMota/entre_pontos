@@ -14,6 +14,8 @@ class _DiscoverUsersPageState extends State<DiscoverUsersPage>
     with TickerProviderStateMixin {
   final UserService _userService = UserService();
 
+  final TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -39,6 +41,7 @@ class _DiscoverUsersPageState extends State<DiscoverUsersPage>
             child: Column(
               children: [
                 TextField(
+                  controller: searchController,
                   decoration: InputDecoration(
                     hintText: 'Pesquisar',
                     suffixIcon: const Icon(Icons.search),
@@ -81,14 +84,22 @@ class _DiscoverUsersPageState extends State<DiscoverUsersPage>
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: ListTile(
-                                  leading: CircleAvatar(
+                                  leading: const CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                      // users[index].foto,
                                       'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
                                     ),
                                   ),
                                   title: Text(users[index].nome),
-                                  subtitle: Text(users[index].email),
+                                  isThreeLine: true,
+                                  subtitle: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(users[index].email),
+                                      Text(users[index].tags.join(', ')),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

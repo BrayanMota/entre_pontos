@@ -1,8 +1,15 @@
-import 'package:entre_pontos/apps/user/pages/tags.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
+import 'package:entre_pontos/apps/user/model.dart';
+import 'package:entre_pontos/apps/user/pages/tags.dart';
+
 class VerifyPage extends StatefulWidget {
-  const VerifyPage({super.key});
+  UserModel user;
+  VerifyPage({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   State<VerifyPage> createState() => _VerifyPageState();
@@ -14,16 +21,22 @@ class _VerifyPageState extends State<VerifyPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: CardVerify(),
+        body: CardVerify(
+          user: widget.user,
+        ),
       ),
     );
   }
 }
 
 class CardVerify extends StatelessWidget {
+  UserModel user;
   final TextEditingController _emailController = TextEditingController();
 
-  CardVerify({super.key});
+  CardVerify({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +108,9 @@ class CardVerify extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TagsPage(),
+                        builder: (context) => TagsPage(
+                          user: user,
+                        ),
                       ),
                     );
                   },

@@ -1,3 +1,4 @@
+import 'package:entre_pontos/apps/user/model.dart';
 import 'package:entre_pontos/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,22 +27,20 @@ class AuthService {
     return _auth.signOut();
   }
 
-  Future<User?> getUsuarioLogado() async {
+  Future<User?> getUser() async {
     return _auth.currentUser;
   }
 
-  Future<String?> criarUsuario(String nome, String email, String senha) async {
+  Future<String?> register(UserModel userModel) async {
     try {
-      if (senha.length < 6) {
-        return 'Senha deve ter no mínimo 6 caracteres';
-      }
       UserCredential user = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: senha,
+        email: userModel.email,
+        password: userModel.senha,
       );
-      _userService.createUser(nome, email, user.user!.uid);
+      userModel.id = user.user!.uid;
+      _userService.createUser(userModel);
       if (user.user != null) {
-        await user.user!.updateDisplayName(nome);
+        await user.user!.updateDisplayName(userModel.nome);
       }
       return null;
     } on FirebaseAuthException catch (e) {

@@ -1,10 +1,16 @@
-import 'package:entre_pontos/main.dart';
-import 'package:entre_pontos/services/user_service.dart';
+import 'package:entre_pontos/services/auth_service.dart';
 import 'package:flutter/material.dart';
+
 import 'package:entre_pontos/apps/user/mock.dart';
+import 'package:entre_pontos/apps/user/model.dart';
+import 'package:entre_pontos/main.dart';
 
 class TagsPage extends StatefulWidget {
-  const TagsPage({super.key});
+  UserModel user;
+  TagsPage({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   State<TagsPage> createState() => _TagsPageState();
@@ -15,15 +21,22 @@ class _TagsPageState extends State<TagsPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: const Scaffold(
-        body: ListTags(),
+      child: Scaffold(
+        body: ListTags(
+          user: widget.user,
+        ),
       ),
     );
   }
 }
 
 class ListTags extends StatefulWidget {
-  const ListTags({super.key});
+  UserModel user;
+
+  ListTags({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   State<ListTags> createState() => _ListTagsState();
@@ -31,7 +44,6 @@ class ListTags extends StatefulWidget {
 
 class _ListTagsState extends State<ListTags> {
   final List _selectedTags = [];
-  final UserService _userService = UserService();
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +114,7 @@ class _ListTagsState extends State<ListTags> {
                     ),
                   );
                 } else {
-                  _userService.updateTags(_selectedTags);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RotePage(),
-                    ),
-                  );
+                  _salvarCadastro();
                 }
               },
               child: Text('${_selectedTags.length}/5 Finalizar'),
@@ -117,5 +123,38 @@ class _ListTagsState extends State<ListTags> {
         ),
       ),
     );
+  }
+
+  void _salvarCadastro() {
+    final AuthService authService = AuthService();
+    UserModel user = UserModel(
+      id: widget.user.id,
+      nome: widget.user.nome,
+      email: widget.user.email,
+      senha: widget.user.senha,
+      tags: _selectedTags.cast<String>(),
+    );
+
+    authService.register(user).then((String? erro) {
+      if (erro != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(erro),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Usuário criado com sucesso'),
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RotePage(),
+          ),
+        );
+      }
+    });
   }
 }

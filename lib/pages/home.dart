@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _auth.initialize();
-    _auth.getUsuarioLogado().then((user) {
+    _auth.getUser().then((user) {
       if (user != null) {
         setState(() {
           nome = user.displayName!;
